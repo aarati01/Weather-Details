@@ -1,16 +1,88 @@
-const data = null;
+const getWeather = (city) => {
+  cityName.innerHTML = city;
+  let p = fetch(
+    `http://api.weatherapi.com/v1/current.json?key=6f0153745f7f4db0b1a153336242110&q=${city}&aqi=no`,
+    {
+      method: "GET",
+    }
+  );
 
-const xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
+  p.then((response) => {
+    console.log("Status:", response.status);
+    console.log("Response OK:", response.ok);
 
-xhr.addEventListener('readystatechange', function () {
-	if (this.readyState === this.DONE) {
-		console.log(this.responseText);
-	}
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  })
+    .then((data) => {
+      const temperature = data.current.temp_c;
+      const location = data.location.name;
+      const cloud = data.current.cloud;
+      const windDegree = data.current.wind_degree;
+      const localTime = data.location.localtime;
+      const humidity = data.current.humidity;
+      const feelLike = data.current.feelslike_c;
+      const country = data.location.country;
+
+      document.getElementById("temperature").textContent = `${temperature} °C`;
+      console.log("Temperature:", `${temperature} °C`);
+      document.getElementById("temperature2").textContent = `${temperature} °C`;
+      console.log("Temperature:", `${temperature} °C`);
+
+      document.getElementById("loc").textContent = location;
+      console.log("Location:", location);
+
+      document.getElementById("cloud").textContent = `${cloud}%`;
+      console.log("Cloud Coverage:", `${cloud}%`);
+
+      document.getElementById("wind").textContent = `${windDegree}°`;
+      console.log("Wind Degree:", `${windDegree}°`);
+
+      document.getElementById("wind2").textContent = `${windDegree}°`;
+      console.log("Wind Degree:", `${windDegree}°`);
+
+      document.getElementById("time").textContent = localTime;
+      console.log("Local Time:", localTime);
+
+      document.getElementById("hums").textContent = `${humidity}%`;
+      console.log("Humidity:", `${humidity}%`);
+
+      document.getElementById("hums2").textContent = `${humidity}%`;
+      console.log("Humidity:", `${humidity}%`);
+
+      document.getElementById("cold").textContent = `${feelLike}°`;
+      console.log("Feels Like:", `${feelLike}°`);
+
+      document.getElementById("country").textContent = country;
+      console.log("Country:", country);
+
+      const tableBody = document.getElementById("table_body");
+      tableBody.innerHTML = "";
+      const row = `<tr>
+					<td></td>
+					<td>${location}</td>
+					<td>${temperature} °C</td>
+					<td>${country}</td>
+					<td>${cloud}%</td>
+					<td>${windDegree}°</td>
+					<td>${localTime}</td>
+					<td>${feelLike}°</td>
+					<td>${humidity}%</td>
+				 </tr>`;
+      tableBody.innerHTML += row;
+    })
+
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+};
+
+submit.addEventListener("click", (e) => {
+  e.preventDefault();
+  getWeather(city.value);
 });
 
-xhr.open('GET', 'https://weather-api-by-any-city.p.rapidapi.com/weather/London');
-xhr.setRequestHeader('x-rapidapi-key', '109e0b3089msh7add9c560661c6ep108bf3jsn4cbc252df61b');
-xhr.setRequestHeader('x-rapidapi-host', 'weather-api-by-any-city.p.rapidapi.com');
-
-xhr.send(data);
+getWeather("toronto");
