@@ -1,5 +1,49 @@
+const tableBody = document.getElementById("table_body");
+
+const fetchData = async (city) => {
+  let response = await fetch(
+    `https://api.weatherapi.com/v1/current.json?key=6f0153745f7f4db0b1a153336242110&q=${city}&aqi=no`,{
+      method: "GET",}
+  );
+
+  
+  let data= await response.json()
+  return data
+};
+
+const addRow=(data)=>{
+  
+  const temperature = data.current.temp_c;
+  const location = data.location.name;
+  const cloud = data.current.cloud;
+  const windDegree = data.current.wind_degree;
+  const localTime = data.location.localtime;
+  const humidity = data.current.humidity;
+  const feelLike = data.current.feelslike_c;
+  const country = data.location.country;
+
+  const row = `<tr>
+  <td></td>
+  <td>${location}</td>
+  <td>${temperature} °C</td>
+  <td>${country}</td>
+  <td>${cloud}%</td>
+  <td>${windDegree}°</td>
+  <td>${localTime}</td>
+  <td>${feelLike}°</td>
+  <td>${humidity}%</td>
+ </tr>`;
+ tableBody.innerHTML += row;
+}
+
+const cities=["kathmandu", "bhaktapur","lalitpur", "dhading","toronto","perth"]
+
+cities.map(async(city)=>{
+  const data = await fetchData(city)
+  addRow(data)
+})
+
 const getWeather = (city) => {
-  cityName.innerHTML = city;
   let p = fetch(
     `https://api.weatherapi.com/v1/current.json?key=6f0153745f7f4db0b1a153336242110&q=${city}&aqi=no`,
     {
@@ -59,21 +103,7 @@ const getWeather = (city) => {
       document.getElementById("country").textContent = country;
       console.log("Country:", country);
 
-      const tableBody = document.getElementById("table_body");
-      tableBody.innerHTML = "";
-      const row = `<tr>
-					<td></td>
-					<td>${location}</td>
-					<td>${temperature} °C</td>
-					<td>${country}</td>
-					<td>${cloud}%</td>
-					<td>${windDegree}°</td>
-					<td>${localTime}</td>
-					<td>${feelLike}°</td>
-					<td>${humidity}%</td>
-				 </tr>`;
-      tableBody.innerHTML += row;
-    })
+          })
 
     .catch((error) => {
       console.error("Error fetching data:", error);
