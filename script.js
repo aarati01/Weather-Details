@@ -1,7 +1,7 @@
 const getWeather = (city) => {
   cityName.innerHTML = city;
   let p = fetch(
-    `http://api.weatherapi.com/v1/current.json?key=6f0153745f7f4db0b1a153336242110&q=${city}&aqi=no`,
+    `https://api.weatherapi.com/v1/current.json?key=6f0153745f7f4db0b1a153336242110&q=${city}&aqi=no`,
     {
       method: "GET",
     }
