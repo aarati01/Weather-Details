@@ -2,7 +2,7 @@ const tableBody = document.getElementById("table_body");
 
 const fetchData = async (city) => {
   let response = await fetch(
-    `https://api.weatherapi.com/v1/current.json?key=6f0153745f7f4db0b1a153336242110&q=${city}&aqi=no`,{
+    `https://cors-anywhere.herokuapp.com/https://api.weatherapi.com/v1/current.json?key=6f0153745f7f4db0b1a153336242110&q=${city}&aqi=no`,{
       method: "GET",}
   );
 
